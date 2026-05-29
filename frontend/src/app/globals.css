@@ -69,3 +69,26 @@ body {
   background: rgba(59, 130, 246, 0.35);
   color: #fff;
 }
+
+/* Dashboard scrollbar */
+.dashboard-scroll::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.dashboard-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+}
+
+/* TradingView — fill GMX-style tall chart container */
+.tradingview-widget-container,
+.tradingview-widget-container__widget {
+  height: 100% !important;
+  min-height: 100% !important;
+}
+
+.tradingview-widget-container iframe {
+  height: 100% !important;
+  min-height: 100% !important;
+}
