@@ -1,0 +1,70 @@
+export const pptTokenAbi = [
+  {
+    type: "function",
+    name: "mint",
+    stateMutability: "nonpayable",
+    inputs: [{ name: "amount", type: "uint256" }],
+    outputs: [],
+  },
+  {
+    type: "function",
+    name: "balanceOf",
+    stateMutability: "view",
+    inputs: [{ name: "account", type: "address" }],
+    outputs: [{ type: "uint256" }],
+  },
+  {
+    type: "function",
+    name: "decimals",
+    stateMutability: "view",
+    inputs: [],
+    outputs: [{ type: "uint8" }],
+  },
+  {
+    type: "function",
+    name: "symbol",
+    stateMutability: "view",
+    inputs: [],
+    outputs: [{ type: "string" }],
+  },
+  {
+    type: "function",
+    name: "MAX_MINT_AMOUNT",
+    stateMutability: "view",
+    inputs: [],
+    outputs: [{ type: "uint256" }],
+  },
+  {
+    type: "function",
+    name: "MINT_COOLDOWN",
+    stateMutability: "view",
+    inputs: [],
+    outputs: [{ type: "uint256" }],
+  },
+  {
+    type: "function",
+    name: "mintCooldownRemaining",
+    stateMutability: "view",
+    inputs: [{ name: "account", type: "address" }],
+    outputs: [{ type: "uint256" }],
+  },
+  {
+    type: "event",
+    name: "FaucetMint",
+    inputs: [
+      { name: "account", type: "address", indexed: true },
+      { name: "amount", type: "uint256", indexed: false },
+      { name: "timestamp", type: "uint256", indexed: false },
+    ],
+  },
+  {
+    type: "error",
+    name: "InvalidMintAmount",
+    inputs: [],
+  },
+  {
+    type: "error",
+    name: "MintCooldownActive",
+    inputs: [{ name: "secondsRemaining", type: "uint256" }],
+  },
+] as const;
