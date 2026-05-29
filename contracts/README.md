@@ -1,66 +1,88 @@
-## Foundry
+# PerpPilot Contracts (Foundry)
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+## Setup
 
-Foundry consists of:
-
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
-
-## Documentation
-
-https://book.getfoundry.sh/
-
-## Usage
-
-### Build
-
-```shell
-$ forge build
+```bash
+cd contracts
+forge install OpenZeppelin/openzeppelin-contracts --no-commit
+cp .env.example .env
 ```
 
-### Test
+## Test
 
-```shell
-$ forge test
+```bash
+forge test -vv
 ```
 
-### Format
+## Deploy to Sepolia
 
-```shell
-$ forge fmt
+Load env vars first, then deploy:
+
+```bash
+cd contracts
+source .env
+
+# Confirm RPC points to Sepolia (URL should contain "sepolia")
+echo $SEPOLIA_RPC_URL
+
+forge script script/DeployPerpPilotToken.s.sol:DeployPerpPilotToken \
+  --rpc-url $SEPOLIA_RPC_URL \
+  --chain sepolia \
+  --broadcast
 ```
 
-### Gas Snapshots
+`PRIVATE_KEY` works with or without the `0x` prefix.
 
-```shell
-$ forge snapshot
+**Important:** Always use `--chain sepolia`. Without it, Foundry may broadcast to mainnet (chain 1) and fail with insufficient funds.
+
+### Sepolia test ETH
+
+Your deployer wallet needs Sepolia ETH (not mainnet ETH):
+
+- [Alchemy Sepolia Faucet](https://www.alchemy.com/faucets/ethereum-sepolia)
+- [Google Cloud Sepolia Faucet](https://cloud.google.com/application/web3/faucet/ethereum/sepolia)
+
+## Deploy (without verification)
+
+```bash
+source .env
+
+forge script script/DeployPerpPilotToken.s.sol:DeployPerpPilotToken \
+  --rpc-url $SEPOLIA_RPC_URL \
+  --chain sepolia \
+  --broadcast
 ```
 
-### Anvil
+## Verify on Etherscan
 
-```shell
-$ anvil
+Replace `<CONTRACT_ADDRESS>` with the deployed address:
+
+```bash
+source .env
+
+forge verify-contract \
+  <CONTRACT_ADDRESS> \
+  src/PerpPilotToken.sol:PerpPilotToken \
+  --chain sepolia \
+  --etherscan-api-key $ETHERSCAN_API_KEY \
+  --watch
 ```
 
-### Deploy
+## Frontend Configuration
 
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
+After deployment, set the token address in `frontend/.env.local`:
+
+```bash
+NEXT_PUBLIC_PPT_TOKEN_ADDRESS=<CONTRACT_ADDRESS>
 ```
 
-### Cast
+## Contract Overview
 
-```shell
-$ cast <subcommand>
-```
+| Constant | Value |
+| --- | --- |
+| Name | PerpPilot Token |
+| Symbol | PPT |
+| Max mint per tx | 1,000 PPT |
+| Cooldown | 5 minutes |
 
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+`mint(uint256 amount)` — public faucet mint to `msg.sender`.
