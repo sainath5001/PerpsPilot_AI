@@ -1,13 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { X } from "lucide-react";
 import { SIDEBAR_ITEMS } from "@/lib/dashboard/constants";
 import { useAppStore } from "@/store/use-app-store";
-import type { DashboardSection } from "@/types/dashboard";
 import { cn } from "@/lib/utils";
 
 export function DashboardSidebar() {
+  const pathname = usePathname();
   const section = useAppStore((s) => s.dashboardSection);
   const setSection = useAppStore((s) => s.setDashboardSection);
   const mobileOpen = useAppStore((s) => s.mobileSidebarOpen);
@@ -33,7 +34,11 @@ export function DashboardSidebar() {
         {SIDEBAR_ITEMS.map((item) => {
           const Icon = item.icon;
           const isLink = Boolean(item.href);
-          const active = !isLink && section === item.id;
+          const active = isLink
+            ? pathname === item.href
+            : item.section
+              ? section === item.section
+              : false;
 
           if (isLink && item.href) {
             return (
@@ -41,10 +46,15 @@ export function DashboardSidebar() {
                 key={item.id}
                 href={item.href}
                 onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition hover:bg-white/5 hover:text-foreground"
+                className={cn(
+                  "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition",
+                  active
+                    ? "border border-primary/30 bg-primary/10 text-primary"
+                    : "text-muted-foreground hover:bg-white/5 hover:text-foreground",
+                )}
               >
-                <Icon className="h-4 w-4" />
-                {item.label}
+                <Icon className="h-4 w-4 shrink-0" />
+                <span className={cn(!sidebarOpen && "lg:hidden")}>{item.label}</span>
               </Link>
             );
           }
@@ -53,7 +63,7 @@ export function DashboardSidebar() {
             <button
               key={item.id}
               type="button"
-              onClick={() => setSection(item.id as DashboardSection)}
+              onClick={() => item.section && setSection(item.section)}
               className={cn(
                 "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition",
                 active

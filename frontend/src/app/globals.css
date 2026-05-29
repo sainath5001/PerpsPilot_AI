@@ -92,3 +92,41 @@ body {
   height: 100% !important;
   min-height: 100% !important;
 }
+
+/* AI Copilot markdown */
+.copilot-markdown p {
+  margin: 0.5em 0;
+}
+
+.copilot-markdown ul,
+.copilot-markdown ol {
+  margin: 0.5em 0;
+  padding-left: 1.25em;
+}
+
+.copilot-markdown strong {
+  color: var(--foreground);
+  font-weight: 600;
+}
+
+.copilot-markdown code {
+  border-radius: 0.25rem;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 0.1em 0.35em;
+  font-size: 0.85em;
+}
+
+.input-terminal {
+  width: 100%;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.35);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.input-terminal:focus {
+  border-color: rgba(59, 130, 246, 0.45);
+}

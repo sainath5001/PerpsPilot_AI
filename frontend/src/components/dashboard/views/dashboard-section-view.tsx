@@ -3,10 +3,9 @@
 import { motion } from "framer-motion";
 import { Bot, PieChart, ShieldAlert, TrendingUp } from "lucide-react";
 import { PortfolioAllocationChart } from "@/components/dashboard/charts/portfolio-allocation-chart";
-import { RiskScoreChart } from "@/components/dashboard/charts/risk-score-chart";
 import { LeverageExposureCard } from "@/components/dashboard/widgets/leverage-exposure-card";
-import { LiquidationRiskCard } from "@/components/dashboard/widgets/liquidation-risk-card";
 import { TradingChartPanel } from "@/components/dashboard/widgets/trading-chart-panel";
+import { RiskAnalyzerTerminal } from "@/components/risk/risk-analyzer-terminal";
 import { GlassPanel } from "@/components/ui/glass-panel";
 import { SECTION_TITLES } from "@/lib/dashboard/constants";
 import type { DashboardSection } from "@/types/dashboard";
@@ -41,8 +40,6 @@ export function DashboardSectionView({ section }: DashboardSectionViewProps) {
           <div>
             <h2 className="text-xl font-semibold">{SECTION_TITLES[section]}</h2>
             <p className="text-sm text-muted-foreground">
-              {section === "copilot" &&
-                "AI trade analysis and risk explanations — coming in the next sprint."}
               {section === "portfolio" && "Allocation and simulation capital overview."}
               {section === "risk" && "Leverage, liquidation, and risk score analytics."}
               {section === "market" && "Live market charts and macro sentiment."}
@@ -50,13 +47,6 @@ export function DashboardSectionView({ section }: DashboardSectionViewProps) {
           </div>
         </div>
       </GlassPanel>
-
-      {section === "copilot" && (
-        <GlassPanel className="p-8 text-center text-muted-foreground">
-          Connect a position and ask: &quot;I opened 20x BTC long&quot; — AI copilot launches
-          next.
-        </GlassPanel>
-      )}
 
       {section === "portfolio" && (
         <div className="grid gap-4 lg:grid-cols-2">
@@ -70,18 +60,7 @@ export function DashboardSectionView({ section }: DashboardSectionViewProps) {
         </div>
       )}
 
-      {section === "risk" && (
-        <div className="grid gap-4 lg:grid-cols-2">
-          <LeverageExposureCard />
-          <LiquidationRiskCard />
-          <GlassPanel className="p-5 lg:col-span-2">
-            <p className="mb-4 text-sm font-medium">Risk Score (24h)</p>
-            <div className="h-[220px]">
-              <RiskScoreChart />
-            </div>
-          </GlassPanel>
-        </div>
-      )}
+      {section === "risk" && <RiskAnalyzerTerminal />}
 
       {section === "market" && <TradingChartPanel variant="hero" />}
     </motion.div>

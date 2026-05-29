@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Droplets, LayoutDashboard } from "lucide-react";
+import { ArrowRight, Droplets, LayoutDashboard, Sparkles } from "lucide-react";
 import { AppHeader } from "@/components/layout/app-header";
 import { AppShell, TerminalPanel } from "@/components/layout/app-shell";
 import { Button } from "@/components/ui/button";
@@ -24,7 +24,7 @@ export default function Home() {
         </p>
       </header>
 
-      <div className="mb-8 grid gap-4 sm:grid-cols-2">
+      <div className="mb-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <Link href="/faucet" className="group">
           <Card className="h-full border-primary/20 bg-gradient-to-br from-card/90 to-primary/5 transition hover:border-primary/40">
             <CardHeader>
@@ -40,6 +40,26 @@ export default function Home() {
             <CardContent>
               <Button variant="terminal" className="w-full sm:w-auto">
                 Open Faucet
+              </Button>
+            </CardContent>
+          </Card>
+        </Link>
+
+        <Link href="/copilot" className="group">
+          <Card className="h-full border-violet-500/20 bg-gradient-to-br from-card/90 to-violet-500/5 transition hover:border-violet-500/40">
+            <CardHeader>
+              <div className="flex items-center justify-between">
+                <Sparkles className="h-8 w-8 text-violet-400" />
+                <ArrowRight className="h-5 w-5 text-muted-foreground transition group-hover:translate-x-1 group-hover:text-violet-400" />
+              </div>
+              <CardTitle className="mt-4">AI Copilot</CardTitle>
+              <CardDescription>
+                Analyze leverage, liquidation risk, and trading psychology.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button variant="outline" className="w-full sm:w-auto">
+                Open Copilot
               </Button>
             </CardContent>
           </Card>
