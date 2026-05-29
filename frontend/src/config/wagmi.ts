@@ -9,6 +9,8 @@ export const wagmiConfig = getDefaultConfig({
   projectId: walletConnectProjectId || "00000000000000000000000000000000",
   chains: [sepolia],
   ssr: true,
+  /** Reduces fights between multiple browser wallet extensions */
+  multiInjectedProviderDiscovery: false,
 });
 
 export const defaultChainId = chainConfig.defaultChainId;

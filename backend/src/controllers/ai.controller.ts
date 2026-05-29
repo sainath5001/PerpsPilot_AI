@@ -7,6 +7,7 @@ import {
   isOpenAIConfigured,
   streamChat,
 } from "../services/ai.service.js";
+import { formatOpenAIErrorForStream } from "../utils/openai-errors.js";
 
 export async function aiStatus(_req: Request, res: Response): Promise<void> {
   res.json(getAiStatus());
@@ -56,7 +57,7 @@ export async function aiChatStream(
     }
 
     res.write(
-      `data: ${JSON.stringify({ error: error instanceof Error ? error.message : "Stream failed" })}\n\n`,
+      `data: ${JSON.stringify({ error: formatOpenAIErrorForStream(error) })}\n\n`,
     );
     res.end();
   }

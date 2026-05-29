@@ -6,7 +6,9 @@ import { RiskAnalyzerForm } from "@/components/risk/risk-analyzer-form";
 import { RiskResultsPanel } from "@/components/risk/risk-results-panel";
 import { analyzePositionRisk } from "@/lib/risk/api";
 import type { PositionFormInput, RiskAnalyzeResult } from "@/types/risk";
+import { EmptyState } from "@/components/ui/empty-state";
 import { formatUsdFromTokens } from "@/lib/blockchain/format";
+import { BarChart3 } from "lucide-react";
 import { usePptBalance } from "@/hooks/use-ppt-balance";
 import { BLOCKCHAIN_CONSTANTS } from "@/lib/blockchain/constants";
 
@@ -57,15 +59,26 @@ export function RiskAnalyzerTerminal() {
         {result ? (
           <RiskResultsPanel result={result} />
         ) : (
-          <div className="flex h-full min-h-[320px] items-center justify-center rounded-xl border border-dashed border-white/10 bg-white/[0.02] p-8 text-center text-sm text-muted-foreground">
-            Configure your position and run analysis to see liquidation estimates,
-            leverage scoring, and AI contextual insights.
-            {balance !== undefined ? (
-              <p className="mt-2 block text-primary">
-                PPT simulation capital: {formatUsdFromTokens(balance)} mock USD
-              </p>
-            ) : null}
-          </div>
+          <EmptyState
+            icon={<BarChart3 className="h-8 w-8 text-primary" />}
+            title="No analysis yet"
+            description={
+              balance !== undefined
+                ? `Configure your position and run analysis. PPT simulation capital: ${formatUsdFromTokens(balance)} mock USD.`
+                : "Configure asset, leverage, size, and entry — then run analysis for liquidation estimates and risk scores."
+            }
+            actionLabel="Use sample: BTC 20x long"
+            onAction={() =>
+              runAnalysis({
+                asset: "BTC",
+                leverage: 20,
+                positionSize: 0.25,
+                entryPrice: 67000,
+                direction: "long",
+                portfolioCapitalUsd: pptUsd ? pptUsd * 100 : 10000,
+              })
+            }
+          />
         )}
       </div>
     </div>

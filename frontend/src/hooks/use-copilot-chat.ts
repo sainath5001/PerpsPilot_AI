@@ -3,6 +3,7 @@
 import { useCallback } from "react";
 import { toast } from "sonner";
 import { streamChatMessage, sendChatMessage } from "@/lib/ai/client";
+import { formatAiErrorMessage } from "@/lib/ai/errors";
 import { useCopilotStore } from "@/store/use-copilot-store";
 import { usePptBalance } from "@/hooks/use-ppt-balance";
 import { formatTokenAmount } from "@/lib/blockchain/format";
@@ -74,12 +75,14 @@ export function useCopilotChat() {
           });
         }
       } catch (error) {
-        const msg = error instanceof Error ? error.message : "AI request failed";
+        const msg = formatAiErrorMessage(error);
         updateMessage(assistantId, {
-          content: `**Error:** ${msg}`,
+          content: msg,
           status: "error",
         });
-        toast.error("Copilot unavailable", { description: msg });
+        toast.error("Copilot unavailable", {
+          description: error instanceof Error ? error.message : "AI request failed",
+        });
       } finally {
         setLoading(false);
       }

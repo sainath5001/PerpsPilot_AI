@@ -1,4 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
+import { toAppError } from "../utils/openai-errors.js";
 
 export class AppError extends Error {
   constructor(
@@ -18,6 +19,13 @@ export function errorHandler(
 ): void {
   if (err instanceof AppError) {
     res.status(err.statusCode).json({ error: err.message });
+    return;
+  }
+
+  const openAiErr = toAppError(err);
+  if (openAiErr.statusCode !== 500 || openAiErr.message !== "AI request failed") {
+    console.error(err);
+    res.status(openAiErr.statusCode).json({ error: openAiErr.message });
     return;
   }
 
